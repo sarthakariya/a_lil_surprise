@@ -1,97 +1,65 @@
-@import url('https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Montserrat:wght@400;700&display=swap');
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap');
 
-:root {
-    --bg-color-1: #0A0A1F;
-    --bg-color-2: #1E0A3F;
-    --bg-color-3: #3A0F5F;
-    --heart-color: #ff3399;
-    --text-color: #ffebf5;
-    --glow-color: #ff99ff;
-    --border-color: rgba(255, 255, 255, 0.1);
-}
-
+/* --- Global Styles & Background --- */
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(to right, var(--bg-color-1), var(--bg-color-2), var(--bg-color-3));
+    background: #0f0c29; /* fallback */
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
     height: 100vh;
-    font-family: 'Montserrat', sans-serif;
+    font-family: 'Quicksand', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    color: var(--text-color);
 }
 
-/* Liquid background animation */
-#liquid-canvas {
+#particle-canvas {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     z-index: 0;
-    filter: blur(50px) brightness(1.2) contrast(1.5);
-    animation: liquid-warp 15s ease-in-out infinite alternate;
-}
-
-@keyframes liquid-warp {
-    0% { transform: scale(1) rotate(0deg); }
-    100% { transform: scale(1.2) rotate(5deg); }
 }
 
 .container, main.letter-container {
     position: relative;
     z-index: 1;
-    text-align: center;
 }
 
-/* --- Envelope Page --- */
-.page-title {
-    font-family: 'UnifrakturMaguntia', cursive;
-    color: var(--glow-color);
-    font-size: 3rem;
-    text-shadow: 0 0 15px var(--glow-color);
-    animation: pulse-glow 2s infinite alternate;
-}
-@keyframes pulse-glow {
-    from { text-shadow: 0 0 10px var(--glow-color), 0 0 20px var(--glow-color); }
-    to { text-shadow: 0 0 20px var(--glow-color), 0 0 30px var(--glow-color); }
-}
-
-.click-prompt {
-    margin-top: 20px;
-    font-size: 0.9rem;
-    color: var(--glow-color);
-    opacity: 0.7;
-    animation: fade-in 2s forwards;
-}
-
+/* --- Page 1: Envelope & Heart --- */
 .envelope-wrapper {
     position: relative;
     perspective: 1000px;
-    cursor: pointer;
 }
 
 .envelope {
     position: relative;
-    width: 320px;
-    height: 220px;
-    background: linear-gradient(145deg, #2a0b4d, #1a082d);
+    width: 300px;
+    height: 200px;
+    background: linear-gradient(145deg, #4d468d, #3b356d);
     border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.7), inset 0 2px 5px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
     transform-style: preserve-3d;
-    transition: transform 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 1.5s 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .envelope-wrapper.open .envelope {
     transform: translateY(100px) rotateX(-15deg);
 }
 
+/* Envelope Flap */
 .envelope::after {
     content: '';
     position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 50%;
-    background: linear-gradient(165deg, #4d158d, #3b0e6d);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(165deg, #6059a9, #4d468d);
     border-radius: 10px 10px 0 0;
     transform-origin: top;
     transition: transform 1s 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -102,61 +70,61 @@ body {
     transform: rotateX(180deg);
 }
 
+/* Letter inside */
 .letter {
     position: absolute;
-    inset: 15px;
-    background: #0d041a;
+    inset: 10px;
+    background: #fff;
     border-radius: 5px;
-    box-shadow: 0 0 15px rgba(255,255,255,0.1);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
     transform: translateY(100%) scaleY(0);
-    transition: transform 1.2s 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.5s 1.5s;
+    transition: transform 1s 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+                opacity 0.5s 1.5s;
     opacity: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px dashed var(--glow-color);
 }
 .envelope-wrapper.open .letter {
     transform: translateY(-50px) scaleY(1);
     opacity: 1;
 }
-
 .letter-text {
-    color: var(--glow-color);
+    text-align: center;
+    padding-top: 40%;
+    color: #302b63;
     font-weight: bold;
-    font-size: 20px;
-    opacity: 0;
-    animation: fadeInText 1s 2.5s forwards;
-    text-shadow: 0 0 10px var(--glow-color);
 }
-@keyframes fadeInText { to { opacity: 1; } }
 
+/* Heart Seal */
 .heart-seal {
     position: absolute;
-    top: 45%; left: 50%;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    width: 60px; height: 60px;
-    background: var(--heart-color);
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background: #ff69b4;
     border-radius: 50% 50% 50% 0 / 50% 50% 0 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
     z-index: 11;
-    box-shadow: 0 0 20px var(--heart-color), inset 0 0 8px rgba(255,255,255,0.7);
-    transition: opacity 0.5s ease;
-    cursor: pointer;
+    box-shadow: 0 0 15px #ff69b4, inset 0 0 5px rgba(255,255,255,0.5);
+    transition: opacity 0.3s ease;
 }
 
+/* --- Heart Shatter Animation --- */
 .heart-fragments {
     position: absolute;
-    top: 45%; left: 50%;
-    width: 1px; height: 1px;
+    top: 50%;
+    left: 50%;
+    width: 1px;
+    height: 1px;
     z-index: 12;
 }
 .fragment {
     position: absolute;
-    width: 8px; height: 8px;
-    background: var(--heart-color);
-    transform: rotate(var(--rot));
+    width: 5px;
+    height: 5px;
+    background: #ff69b4;
+    border-radius: 50%;
     opacity: 1;
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%); /* Sharp, triangular shards */
     animation: shatter 1.5s forwards cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 @keyframes shatter {
@@ -166,104 +134,59 @@ body {
     }
 }
 
-/* --- Letter Page --- */
-main.letter-container {
+/* --- Page 2: Letter Page --- */
+.letter-page {
+    overflow-y: auto; /* Allow scrolling on this page */
+}
+.letter-container {
     max-width: 90%;
-    width: 650px;
-    margin: 40px 0;
+    width: 600px;
     padding: 30px 40px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.1);
     border-radius: 16px;
-    box-shadow: 0 4px 50px rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--border-color);
-    color: var(--text-color);
-    overflow-y: auto;
-    max-height: 90vh;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
 }
 
 .letter-container h1 {
-    font-family: 'UnifrakturMaguntia', cursive;
-    color: var(--glow-color);
-    font-size: 3.5rem;
+    font-family: 'Dancing Script', cursive;
+    color: #ffaddd;
+    font-size: 2.8rem;
     text-align: center;
-    margin-bottom: 25px;
-    text-shadow: 0 0 15px var(--glow-color);
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #ffaddd;
 }
 
 .letter-container p {
-    font-size: 1.15rem;
-    line-height: 1.8;
-    text-align: justify;
+    font-size: 1.1rem;
+    line-height: 1.7;
     text-shadow: 0 0 5px rgba(0,0,0,0.5);
-    margin-bottom: 20px;
 }
 
 .signature {
-    font-family: 'UnifrakturMaguntia', cursive;
-    font-size: 2.2rem;
-    color: var(--glow-color);
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #ffaddd;
     text-align: right;
-    margin-top: 40px;
-    text-shadow: 0 0 15px var(--glow-color);
-    animation: signature-glow 4s infinite alternate;
-}
-@keyframes signature-glow {
-    from { text-shadow: 0 0 5px var(--glow-color), 0 0 10px var(--glow-color); }
-    to { text-shadow: 0 0 15px var(--glow-color), 0 0 20px var(--glow-color); }
+    margin-top: 30px;
+    text-shadow: 0 0 10px #ffaddd;
 }
 
-/* Glitch Effect for H1 */
-.glitch-effect {
-    position: relative;
-    overflow: hidden;
-}
-.glitch-text {
-    position: relative;
-}
-.glitch-text::before, .glitch-text::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    overflow: hidden;
-}
-.glitch-text::before {
-    left: 2px;
-    text-shadow: -2px 0 #0ff;
-    animation: glitch-anim-1 2s infinite linear alternate-reverse;
-}
-.glitch-text::after {
-    left: -2px;
-    text-shadow: -2px 0 #f0f;
-    animation: glitch-anim-2 2s infinite linear alternate-reverse;
-}
-@keyframes glitch-anim-1 {
-    0% { clip-path: inset(80% 0 0 0); }
-    20% { clip-path: inset(5% 0 70% 0); }
-    40% { clip-path: inset(25% 0 50% 0); }
-    60% { clip-path: inset(45% 0 30% 0); }
-    80% { clip-path: inset(70% 0 5% 0); }
-    100% { clip-path: inset(10% 0 85% 0); }
-}
-@keyframes glitch-anim-2 {
-    0% { clip-path: inset(10% 0 85% 0); }
-    20% { clip-path: inset(70% 0 5% 0); }
-    40% { clip-path: inset(30% 0 45% 0); }
-    60% { clip-path: inset(50% 0 25% 0); }
-    80% { clip-path: inset(5% 0 70% 0); }
-    100% { clip-path: inset(80% 0 0 0); }
-}
-
-/* Mobile-first adjustments */
+/* --- Phone Optimization --- */
 @media (max-width: 600px) {
-    .page-title { font-size: 2.2rem; }
-    .envelope { width: 280px; height: 180px; }
-    main.letter-container { width: auto; margin: 20px; padding: 25px; }
-    .letter-container h1 { font-size: 2.8rem; }
+    .envelope {
+        width: 280px;
+        height: 180px;
+    }
+    .letter-container {
+        width: auto;
+        margin: 20px;
+        padding: 25px;
+    }
+    .letter-container h1 { font-size: 2.2rem; }
     .letter-container p { font-size: 1rem; }
     .signature { font-size: 1.8rem; }
 }
