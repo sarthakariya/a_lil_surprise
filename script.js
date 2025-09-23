@@ -29,12 +29,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const typewriter = (element, text, speed) => {
             return new Promise(resolve => {
                 let i = 0;
-                element.textContent = ''; // Clear existing text
-                element.style.opacity = 1; // Make element visible
-
+                element.innerHTML = '<span></span>'; // Create a span for the text
+                const textSpan = element.querySelector('span');
+                
                 const interval = setInterval(() => {
                     if (i < text.length) {
-                        element.textContent += text.charAt(i);
+                        textSpan.textContent += text.charAt(i);
                         i++;
                     } else {
                         clearInterval(interval);
