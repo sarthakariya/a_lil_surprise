@@ -1,23 +1,16 @@
 // --- Envelope & Letter Animation ---
 if (document.querySelector('.envelope-wrapper')) {
     const envelopeWrapper = document.querySelector('.envelope-wrapper');
-    const heartSeal = document.querySelector('.heart-seal');
-    const letter = document.querySelector('.letter');
+    const heart = document.querySelector('.heart');
 
-    heartSeal.addEventListener('click', () => {
-        // Step 1: Open the envelope flap
+    heart.addEventListener('click', () => {
+        // Add the 'open' class to trigger the new animations
         envelopeWrapper.classList.add('open');
         
-        // Step 2: Animate the letter's entrance
-        setTimeout(() => {
-            letter.style.opacity = 1;
-            letter.style.transform = 'translate(-50%, -50%) scale(1)';
-        }, 1500);
-        
-        // Step 3: Wait for the letter animation to complete, then redirect
+        // Wait for the full animation to finish (approx. 7 seconds from your code)
         setTimeout(() => {
             window.location.href = 'letter.html';
-        }, 3000);
+        }, 7000); 
     });
 }
 
@@ -29,8 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const typewriter = (element, text, speed) => {
             return new Promise(resolve => {
                 let i = 0;
-                element.textContent = ''; // Clear existing text
-                element.style.opacity = 1; // Make element visible
+                element.textContent = '';
+                element.style.opacity = 1;
 
                 const interval = setInterval(() => {
                     if (i < text.length) {
@@ -46,15 +39,14 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const startTyping = async () => {
-            const typingSpeed = 50; // Milliseconds per character
+            const typingSpeed = 50;
             for (const el of elements) {
                 const text = el.getAttribute('data-text');
                 await typewriter(el, text, typingSpeed);
-                await new Promise(resolve => setTimeout(resolve, 500)); // Pause between lines
+                await new Promise(resolve => setTimeout(resolve, 500));
             }
         };
 
-        // Start the typing animation after a brief delay
         setTimeout(() => {
             startTyping();
         }, 1000);
