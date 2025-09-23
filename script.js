@@ -25,31 +25,38 @@ if (document.querySelector('.envelope-wrapper')) {
 document.addEventListener('DOMContentLoaded', () => {
     if (document.body.classList.contains('letter-page')) {
         const elements = document.querySelectorAll('.typing-animation');
-        let delay = 1000; // Initial delay
 
-        elements.forEach(el => {
-            const fullText = el.getAttribute('data-text');
-            const textLength = fullText.length;
+        const typewriter = (element, text, speed) => {
+            return new Promise(resolve => {
+                let i = 0;
+                element.textContent = ''; // Clear existing text
+                element.style.opacity = 1; // Make element visible
+
+                const interval = setInterval(() => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        element.style.borderRight = 'none';
+                        resolve();
+                    }
+                }, speed);
+            });
+        };
+
+        const startTyping = async () => {
             const typingSpeed = 50; // Milliseconds per character
-            const animationDuration = textLength * typingSpeed;
+            for (const el of elements) {
+                const text = el.getAttribute('data-text');
+                await typewriter(el, text, typingSpeed);
+                await new Promise(resolve => setTimeout(resolve, 500)); // Pause between lines
+            }
+        };
 
-            // Set a unique animation for each element
-            el.style.animation = `typing ${animationDuration}ms steps(${textLength}, end) forwards, cursor-blink 0.75s step-end infinite`;
-            el.style.animationDelay = `${delay}ms`;
-
-            // Append the full text
-            el.textContent = fullText;
-
-            // Update delay for the next element
-            delay += animationDuration + 500;
-        });
-
-        // Add a global typing animation keyframes
-        const styleSheet = document.styleSheets[0];
-        const typingKeyframes = `@keyframes typing { from { width: 0; } to { width: 100%; } }`;
-        const cursorKeyframes = `@keyframes cursor-blink { from, to { border-color: transparent; } 50% { border-color: #4b3832; } }`;
-        
-        styleSheet.insertRule(typingKeyframes, styleSheet.cssRules.length);
-        styleSheet.insertRule(cursorKeyframes, styleSheet.cssRules.length);
+        // Start the typing animation after a brief delay
+        setTimeout(() => {
+            startTyping();
+        }, 1000);
     }
 });
