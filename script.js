@@ -1,157 +1,55 @@
-// --- Envelope & Letter Animation with GSAP ---
-
+// --- Envelope & Letter Animation ---
 if (document.querySelector('.envelope-wrapper')) {
+    const envelopeWrapper = document.querySelector('.envelope-wrapper');
+    const heartSeal = document.querySelector('.heart-seal');
+    const letter = document.querySelector('.letter');
 
-    const envelopeWrapper = document.querySelector('.envelope-wrapper');
-
-    const heartSeal = document.querySelector('.heart-seal');
-
-    const envelope = document.querySelector('.envelope');
-
-    const letter = document.querySelector('.letter');
-
-
-
-    // Add GSAP library link to the HTML
-
-    const gsapScript = document.createElement('script');
-
-    gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
-
-    document.head.appendChild(gsapScript);
-
-
-
-    heartSeal.addEventListener('click', () => {
-
-        // Step 1: Open the envelope flap
-
-        envelopeWrapper.classList.add('open');
-
-        
-
-        // Wait for the flap to open, then start the letter animation
-
-        setTimeout(() => {
-
-            // Step 2: Animate the letter to scale up and fill the screen
-
-            gsap.to(letter, {
-
-                scale: 10,
-
-                x: '0%',
-
-                y: '0%',
-
-                ease: "power2.inOut",
-
-                duration: 2.5,
-
-                onComplete: () => {
-
-                    // Step 3: Redirect after the animation is complete
-
-                    window.location.href = 'letter.html';
-
-                }
-
-            });
-
-        }, 1500); // Wait for the envelope flap animation to finish
-
-    });
-
+    heartSeal.addEventListener('click', () => {
+        // Step 1: Open the envelope flap
+        envelopeWrapper.classList.add('open');
+        
+        // Step 2: Animate the letter's entrance
+        setTimeout(() => {
+            letter.style.opacity = 1;
+            letter.style.transform = 'translate(-50%, -50%) scale(1)';
+        }, 1500);
+        
+        // Step 3: Wait for the letter animation to complete, then redirect
+        setTimeout(() => {
+            window.location.href = 'letter.html';
+        }, 3000);
+    });
 }
 
-
-
 // --- Typing Animation for Letter.html ---
-
-// This code will only run on the letter.html page
-
 document.addEventListener('DOMContentLoaded', () => {
+    if (document.body.classList.contains('letter-page')) {
+        const elements = document.querySelectorAll('.typing-animation');
+        let delay = 1000; // Initial delay
 
-    if (document.body.classList.contains('letter-page')) {
+        elements.forEach(el => {
+            const fullText = el.getAttribute('data-text');
+            const textLength = fullText.length;
+            const typingSpeed = 50; // Milliseconds per character
+            const animationDuration = textLength * typingSpeed;
 
-        // Select all elements with the typing-animation class
+            // Set a unique animation for each element
+            el.style.animation = `typing ${animationDuration}ms steps(${textLength}, end) forwards, cursor-blink 0.75s step-end infinite`;
+            el.style.animationDelay = `${delay}ms`;
 
-        const elements = document.querySelectorAll('.typing-animation');
+            // Append the full text
+            el.textContent = fullText;
 
-        
+            // Update delay for the next element
+            delay += animationDuration + 500;
+        });
 
-        // Function to remove cursor and show the full text
-
-        const showFullText = (el) => {
-
-            el.style.width = 'auto';
-
-            el.style.borderRight = 'none';
-
-        };
-
-
-
-        // Function to run the typing animation
-
-        const runTypingAnimation = (elements) => {
-
-            let delay = 0;
-
-            elements.forEach(el => {
-
-                const text = el.textContent.trim();
-
-                el.textContent = '';
-
-                el.style.opacity = 1;
-
-                el.style.width = '0%';
-
-                
-
-                // Use a loop to type out each character
-
-                let i = 0;
-
-                const speed = 50; // typing speed in milliseconds
-
-                const type = () => {
-
-                    if (i < text.length) {
-
-                        el.textContent += text.charAt(i);
-
-                        i++;
-
-                        setTimeout(type, speed);
-
-                    } else {
-
-                        // Animation complete, remove cursor
-
-                        showFullText(el);
-
-                    }
-
-                };
-
-                
-
-                // Start typing after a short delay
-
-                setTimeout(type, delay);
-
-                delay += text.length * speed + 500; // Increase delay for the next element
-
-            });
-
-        };
-
-
-
-        runTypingAnimation(elements);
-
-    }
-
+        // Add a global typing animation keyframes
+        const styleSheet = document.styleSheets[0];
+        const typingKeyframes = `@keyframes typing { from { width: 0; } to { width: 100%; } }`;
+        const cursorKeyframes = `@keyframes cursor-blink { from, to { border-color: transparent; } 50% { border-color: #4b3832; } }`;
+        
+        styleSheet.insertRule(typingKeyframes, styleSheet.cssRules.length);
+        styleSheet.insertRule(cursorKeyframes, styleSheet.cssRules.length);
+    }
 });
