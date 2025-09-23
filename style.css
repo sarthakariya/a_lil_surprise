@@ -1,41 +1,75 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap');
+
 /* General Body Styling */
 body {
-    background: #f2e3e3; /* A soft, romantic pink background */
+    background: #1b1924; /* A deeper, more romantic background */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
     font-family: 'Quicksand', sans-serif;
-    overflow: hidden; /* Hide scrollbars on the animation page */
+    overflow: hidden;
 }
 
-/* Page 1: Envelope Animation */
-.container {
+/* --- NEW: Animated Background --- */
+.bg-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    z-index: 0;
+}
+@keyframes-stars {
+    0% { transform: translateY(0) }
+    100% { transform: translateY(-100vh) }
+}
+#stars, #stars2, #stars3, #stars4 {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
     height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-position: center;
+    background-repeat: repeat;
+    background-size: cover;
+    animation-name: keyframes-stars;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+#stars {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'%3E%3Ccircle fill='%23fff' cx='139' cy='134' r='1.5'/%3E%3Ccircle fill='%23fff' cx='320' cy='431' r='1.5'/%3E%3Ccircle fill='%23fff' cx='590' cy='221' r='1.5'/%3E%3Ccircle fill='%23fff' cx='873' cy='490' r='1.5'/%3E%3Ccircle fill='%23fff' cx='930' cy='120' r='1.5'/%3E%3C/svg%3E");
+    animation-duration: 200s;
+}
+#stars2 {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 1000'%3E%3Ccircle fill='%23fff' cx='560' cy='640' r='2'/%3E%3Ccircle fill='%23fff' cx='120' cy='730' r='2'/%3E%3Ccircle fill='%23fff' cx='350' cy='900' r='2'/%3E%3Ccircle fill='%23fff' cx='800' cy='820' r='2'/%3E%3Ccircle fill='%23fff' cx='430' cy='200' r='2'/%3E%3C/svg%3E");
+    animation-duration: 150s;
+}
+
+/* Page 1: Envelope Animation Styling */
+.container {
+    position: relative;
+    z-index: 1;
 }
 
 .envelope-wrapper {
     position: relative;
-    background: #f9d8d8;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
 }
 
 .envelope {
     position: relative;
-    width: 300px;
-    height: 200px;
-    background-color: #f08080; /* Light Coral color */
-    border-radius: 10px;
+    width: 320px;
+    height: 220px;
+    background-color: #f08080;
+    border-radius: 20px; /* More curviness */
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    box-shadow: 0 0 40px rgba(255, 105, 180, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .envelope:before {
@@ -43,28 +77,26 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 0;
-    height: 0;
-    border-top: 100px solid transparent;
-    border-right: 150px solid #e86a6a;
-    border-bottom: 100px solid #e86a6a;
-    border-left: 150px solid transparent;
-    border-radius: 10px;
+    border-top: 110px solid transparent;
+    border-right: 160px solid #e86a6a;
+    border-bottom: 110px solid #e86a6a;
+    border-left: 160px solid transparent;
+    border-radius: 20px;
     z-index: 2;
 }
 
+/* The opening flap */
 .envelope:after {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 300px;
-    height: 100px;
+    width: 100%;
+    height: 50%;
     background-color: #f08080;
-    border-radius: 10px 10px 0 0;
+    border-radius: 20px 20px 0 0; /* Curvy top */
     transform-origin: top;
-    transition: transform 1s 1s ease-in-out;
-    animation: open-flap 2s 1s forwards;
+    animation: open-flap 2.5s 1s forwards cubic-bezier(0.68, -0.55, 0.27, 1.55); /* Smoother animation */
     z-index: 3;
 }
 
@@ -73,11 +105,10 @@ body {
     width: 90%;
     height: 90%;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 15px; /* Curvier letter */
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     z-index: 1;
-    transition: transform 2s 2.5s ease-in-out;
-    animation: slide-out 4s 3s forwards;
+    animation: slide-out 3s 3.5s forwards cubic-bezier(0.16, 1, 0.3, 1); /* Smoother slide */
 }
 
 .letter .text {
@@ -90,18 +121,18 @@ body {
     font-size: 1.2rem;
 }
 
+/* UPDATE: Heart now fades out */
 .heart {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) rotate(-45deg);
     width: 50px;
     height: 50px;
     background-color: #ff4757;
     z-index: 4;
     border-radius: 50px 50px 0 0;
-    transform: translate(-50%, -50%) rotate(-45deg);
-    animation: pulse 1s infinite;
+    animation: heart-beat 1s infinite, fade-out-heart 1s 2s forwards; /* Two animations */
 }
 
 .heart:before, .heart:after {
@@ -113,36 +144,35 @@ body {
     border-radius: 50%;
 }
 
-.heart:before {
-    top: -25px;
-    left: 0;
-}
+.heart:before { top: -25px; left: 0; }
+.heart:after { left: 25px; top: 0; }
 
-.heart:after {
-    left: 25px;
-    top: 0;
-}
-
-/* Animations */
+/* Animations Keyframes */
 @keyframes open-flap {
-    0% { transform: rotateX(0deg); }
-    100% { transform: rotateX(180deg); z-index: 0; }
+    from { transform: rotateX(0deg); z-index: 3;}
+    to { transform: rotateX(180deg); z-index: 0; }
 }
 
 @keyframes slide-out {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-150px); z-index: 5; }
+    from { transform: translateY(0); }
+    to { transform: translateY(-150px); z-index: 5; opacity: 0; }
 }
 
-@keyframes pulse {
+@keyframes heart-beat {
     0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
     50% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.1); }
 }
 
+/* NEW: Animation to make the heart disappear */
+@keyframes fade-out-heart {
+    from { opacity: 1; transform: translate(-50%, -50%) rotate(-45deg) scale(1.1); }
+    to { opacity: 0; transform: translate(-50%, -50%) rotate(-45deg) scale(0); z-index: 0;}
+}
+
 /* Page 2: Letter Styling */
 .letter-page {
-    background: #fffaf0; /* Floral white background for the letter */
-    overflow: auto; /* Allow scrolling for long messages */
+    background: #fdf6f6; /* Soft, warm background for the letter page */
+    overflow-y: auto; /* Allow scrolling */
     height: auto;
     min-height: 100vh;
 }
@@ -153,8 +183,10 @@ body {
     max-width: 800px;
     margin: 50px auto;
     box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-    border-radius: 10px;
+    border-radius: 15px;
     border-left: 5px solid #f08080;
+    position: relative;
+    z-index: 1;
 }
 
 .letter-container h1 {
@@ -180,4 +212,36 @@ body {
     color: #d16060;
     text-align: right;
     margin-top: 40px;
+}
+
+
+/* --- NEW: Mobile Phone Optimization --- */
+@media (max-width: 600px) {
+    .envelope {
+        width: 280px;
+        height: 180px;
+    }
+    .envelope:before {
+        border-top-width: 90px;
+        border-right-width: 140px;
+        border-bottom-width: 90px;
+        border-left-width: 140px;
+    }
+
+    .letter-container {
+        padding: 30px 25px;
+        margin: 20px;
+        max-width: 100%;
+    }
+
+    .letter-container h1 {
+        font-size: 2.5rem;
+    }
+
+    .letter-container p {
+        font-size: 1rem;
+    }
+    .signature {
+        font-size: 1.8rem;
+    }
 }
