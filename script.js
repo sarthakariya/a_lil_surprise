@@ -1,79 +1,143 @@
-// --- Envelope & Letter Animation with GSAP ---
-if (document.querySelector('.envelope-wrapper')) {
-    const envelopeWrapper = document.querySelector('.envelope-wrapper');
-    const heartSeal = document.querySelector('.heart-seal');
-    const envelope = document.querySelector('.envelope');
-    const letter = document.querySelector('.letter');
+// --- UNIQUE LIQUID BACKGROUND ANIMATION ---
+const canvas = document.getElementById('liquid-canvas');
+const ctx = canvas.getContext('2d');
+let particlesArray = [];
+const mouse = {
+    x: null,
+    y: null,
+    radius: 150
+};
 
-    // Add GSAP library link to the HTML
-    const gsapScript = document.createElement('script');
-    gsapScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
-    document.head.appendChild(gsapScript);
+window.addEventListener('mousemove', function(event) {
+    mouse.x = event.x;
+    mouse.y = event.y;
+});
 
-    heartSeal.addEventListener('click', () => {
-        // Step 1: Open the envelope flap
-        envelopeWrapper.classList.add('open');
+class Particle {
+    constructor(x, y, directionX, directionY, size, color) {
+        this.x = x;
+        this.y = y;
+        this.directionX = directionX;
+        this.directionY = directionY;
+        this.size = size;
+        this.color = color;
+    }
+    draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
+        ctx.fillStyle = this.color;
+        ctx.shadowBlur = 10;
+        ctx.shadowColor = this.color;
+        ctx.fill();
+    }
+    update() {
+        if (this.x > canvas.width || this.x < 0) {
+            this.directionX = -this.directionX;
+        }
+        if (this.y > canvas.height || this.y < 0) {
+            this.directionY = -this.directionY;
+        }
         
-        // Wait for the flap to open, then start the letter animation
-        setTimeout(() => {
-            // Step 2: Animate the letter to scale up and fill the screen
-            gsap.to(letter, {
-                scale: 10,
-                x: '0%',
-                y: '0%',
-                ease: "power2.inOut",
-                duration: 2.5,
-                onComplete: () => {
-                    // Step 3: Redirect after the animation is complete
-                    window.location.href = 'letter.html';
-                }
-            });
-        }, 1500); // Wait for the envelope flap animation to finish
-    });
+        let dx = mouse.x - this.x;
+        let dy = mouse.y - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < mouse.radius + this.size) {
+            if (mouse.x < this.x && this.x < canvas.width - this.size * 10) {
+                this.x += 2;
+            }
+            if (mouse.x > this.x && this.x > this.size * 10) {
+                this.x -= 2;
+            }
+            if (mouse.y < this.y && this.y < canvas.height - this.size * 10) {
+                this.y += 2;
+            }
+            if (mouse.y > this.y && this.y > this.size * 10) {
+                this.y -= 2;
+            }
+        }
+        
+        this.x += this.directionX;
+        this.y += this.directionY;
+        this.draw();
+    }
 }
 
-// --- Typing Animation for Letter.html ---
-// This code will only run on the letter.html page
-document.addEventListener('DOMContentLoaded', () => {
-    if (document.body.classList.contains('letter-page')) {
-        // Select all elements with the typing-animation class
-        const elements = document.querySelectorAll('.typing-animation');
-        
-        // Function to remove cursor and show the full text
-        const showFullText = (el) => {
-            el.style.width = 'auto';
-            el.style.borderRight = 'none';
-        };
-
-        // Function to run the typing animation
-        const runTypingAnimation = (elements) => {
-            let delay = 0;
-            elements.forEach(el => {
-                const text = el.textContent.trim();
-                el.textContent = '';
-                el.style.opacity = 1;
-                el.style.width = '0%';
-                
-                // Use a loop to type out each character
-                let i = 0;
-                const speed = 50; // typing speed in milliseconds
-                const type = () => {
-                    if (i < text.length) {
-                        el.textContent += text.charAt(i);
-                        i++;
-                        setTimeout(type, speed);
-                    } else {
-                        // Animation complete, remove cursor
-                        showFullText(el);
-                    }
-                };
-                
-                // Start typing after a short delay
-                setTimeout(type, delay);
-                delay += text.length * speed + 500; // Increase delay for the next element
-            });
-        };
-
-        runTypingAnimation(elements);
+function init() {
+    particlesArray = [];
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    let numberOfParticles = (canvas.height * canvas.width) / 9000;
+    const colors = ['#ff69b4', '#9932cc', '#ff1493', '#da70d6'];
+    for (let i = 0; i < numberOfParticles; i++) {
+        let size = (Math.random() * 2) + 1;
+        let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
+        let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
+        let directionX = (Math.random() * .4) - .2;
+        let directionY = (Math.random() * .4) - .2;
+        let color = colors[Math.floor(Math.random() * colors.length)];
+        particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
     }
+}
+
+function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    for (let i = 0; i < particlesArray.length; i++) {
+        particlesArray[i].update();
+    }
+}
+
+init();
+animate();
+
+window.addEventListener('resize', () => {
+    init();
 });
+
+// --- ENVELOPE & HEART SHATTER ANIMATION ---
+const envelopeWrapper = document.querySelector('.envelope-wrapper');
+const heartSeal = document.querySelector('.heart-seal');
+const shatterSound = document.getElementById('shatter-sound');
+
+if (envelopeWrapper) {
+    let isAnimating = false;
+    envelopeWrapper.addEventListener('click', () => {
+        if (isAnimating) return;
+        isAnimating = true;
+
+        shatterSound.play();
+        
+        // Function to shatter the heart
+        function shatterHeart() {
+            heartSeal.style.transition = 'none';
+            heartSeal.style.opacity = 0;
+            
+            const fragmentsContainer = document.createElement('div');
+            fragmentsContainer.className = 'heart-fragments';
+            envelopeWrapper.appendChild(fragmentsContainer);
+            
+            for (let i = 0; i < 30; i++) {
+                const fragment = document.createElement('div');
+                fragment.className = 'fragment';
+                const randomX = (Math.random() - 0.5) * 400;
+                const randomY = (Math.random() - 0.5) * 400;
+                const randomRot = Math.random() * 360;
+                
+                fragment.style.setProperty('--x', `${randomX}px`);
+                fragment.style.setProperty('--y', `${randomY}px`);
+                fragment.style.setProperty('--rot', `${randomRot}deg`);
+                
+                fragmentsContainer.appendChild(fragment);
+            }
+        }
+
+        shatterHeart();
+        envelopeWrapper.classList.add('open');
+
+        // Redirect after animation is complete
+        setTimeout(() => {
+            window.location.href = 'letter.html';
+        }, 3000); // Redirect after 3 seconds to allow animation to play
+    });
+}
