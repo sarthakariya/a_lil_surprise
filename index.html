@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Special Message For You</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="letter">
+                    <div class="text">
+                        <strong>My Dearest,</strong>
+                        <p>
+                            I have something important to tell you...
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="heart"></div>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to handle the redirect after the animation completes
+        document.addEventListener("DOMContentLoaded", function() {
+            // The total animation duration is roughly 7 seconds
+            // 1s delay + 2s for flap + 4s for letter slide
+            setTimeout(function() {
+                window.location.href = 'letter.html';
+            }, 7000); // 7000 milliseconds = 7 seconds
+        });
+    </script>
+
+</body>
+</html>
