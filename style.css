@@ -12,7 +12,7 @@ body {
     align-items: center;
     overflow: hidden;
     color: #4b3832;
-    background-color: #f7f3e9; /* Kept the working background color */
+    background-color: #f7f3e9;
 }
 
 .background {
@@ -39,7 +39,7 @@ body {
     z-index: 1;
 }
 
-/* --- Page 1: Envelope Animation (NEW) --- */
+/* --- Page 1: Envelope Animation --- */
 .container {
     height: 100vh;
     display: flex;
@@ -177,7 +177,7 @@ body {
     50% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.1); }
 }
 
-/* Page 2: Letter Styling */
+/* --- Page 2: Letter Styling --- */
 .letter-page {
     background: #fffaf0;
     overflow: auto;
@@ -224,4 +224,44 @@ body {
     padding-right: 2px;
     white-space: pre-wrap;
     min-height: 1.2em;
+}
+
+/* --- Mobile Optimization --- */
+@media (max-width: 600px) {
+    .envelope-wrapper {
+        padding: 20px;
+    }
+    .envelope {
+        width: 280px;
+        height: 180px;
+    }
+    .heart {
+        width: 40px;
+        height: 40px;
+    }
+    .heart:before, .heart:after {
+        width: 40px;
+        height: 40px;
+    }
+    .heart:before {
+        top: -20px;
+    }
+    .heart:after {
+        left: 20px;
+        top: 0;
+    }
+    .letter-container {
+        padding: 25px;
+        max-width: 95%;
+        margin: 20px auto;
+    }
+    .letter-container h1 {
+        font-size: 1.8rem;
+    }
+    .letter-container p {
+        font-size: 0.9rem;
+    }
+    .signature {
+        font-size: 1.6rem;
+    }
 }
