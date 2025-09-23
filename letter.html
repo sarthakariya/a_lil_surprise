@@ -4,88 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Universe</title>
-
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap');
-        
-        body {
-            margin: 0; padding: 0;
-            background: #0f0c29;
-            background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
-            background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
-            height: 100vh;
-            font-family: 'Quicksand', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow-y: auto;
-        }
-
-        #particle-canvas {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            z-index: 0;
-        }
-
-        main.letter-container {
-            position: relative; z-index: 1;
-            max-width: 90%; width: 600px;
-            margin: 40px 0; padding: 30px 40px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 16px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            color: white;
-        }
-
-        .letter-container h1 {
-            font-family: 'Dancing Script', cursive;
-            color: #ffaddd;
-            font-size: 2.8rem;
-            text-align: center;
-            margin-bottom: 20px;
-            text-shadow: 0 0 10px #ffaddd;
-        }
-
-        .letter-container p {
-            font-size: 1.1rem;
-            line-height: 1.7;
-            text-shadow: 0 0 5px rgba(0,0,0,0.5);
-        }
-
-        .signature {
-            font-family: 'Dancing Script', cursive;
-            font-size: 2rem;
-            color: #ffaddd;
-            text-align: right;
-            margin-top: 30px;
-            text-shadow: 0 0 10px #ffaddd;
-        }
-
-        @media (max-width: 600px) {
-            .letter-container {
-                width: auto; margin: 20px; padding: 25px;
-            }
-            .letter-container h1 { font-size: 2.2rem; }
-            .letter-container p { font-size: 1rem; }
-            .signature { font-size: 1.8rem; }
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
 </head>
-<body class="letter-page">
-    <canvas id="particle-canvas"></canvas>
+<body>
+    <canvas id="liquid-canvas"></canvas>
 
-    <main class="letter-container">
-        <h1>To My North Star,</h1>
+    <main class="letter-container glitch-effect">
+        <h1 class="glitch-text" data-text="To My North Star,">To My North Star,</h1>
         
         <p>
-            This is where you will write your beautiful, long message to your girlfriend. This new design is meant to feel epic and cosmic, just for her. You can talk about how she is the center of your universe, your guiding star. Pour your heart out in these paragraphs.
+            My dearest, my universe, my guiding light—
         </p>
-
         <p>
-            Remember, you can add as many paragraphs as you want. The container will scroll. The glowing text and the floating, glassy design are meant to make every word feel magical and significant. This is a far more advanced and detailed canvas for your message.
+            From the moment my world collided with yours, everything shifted. You are not merely a star in my sky; you are the radiant heart of a new galaxy, pulling every fragmented piece of me into a perfect orbit. Before you, my life was an empty, echoing void, but you filled it with a light so brilliant, it burns away the darkness. Your existence is a cosmic anomaly, a beautiful chaos that I'll gladly get lost in forever. You are a truth whispered by the constellations, a purpose found in the deep silence between the stars.
+        </p>
+        <p>
+            Every second we're apart feels like an eternity of gravitational pull—an ache to be close to the only force that makes my world spin. This isn't just a letter; it's a transmission from the depths of my soul, sent across the great distance to land directly with you. You've shown me that even in the most dangerous corners of the universe, there is beauty, power, and an unshakeable connection.
         </p>
 
         <div class="signature">
@@ -93,60 +28,6 @@
             Sarthak
         </div>
     </main>
-
-    <script>
-        const canvas = document.getElementById('particle-canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-
-        let particlesArray;
-
-        class Particle {
-            constructor(x, y, directionX, directionY, size, color) {
-                this.x = x; this.y = y; this.directionX = directionX; this.directionY = directionY; this.size = size; this.color = color;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-                ctx.fillStyle = 'rgba(255, 105, 180, 0.5)';
-                ctx.fill();
-            }
-            update() {
-                if (this.x > canvas.width || this.x < 0) { this.directionX = -this.directionX; }
-                if (this.y > canvas.height || this.y < 0) { this.directionY = -this.directionY; }
-                this.x += this.directionX; this.y += this.directionY;
-                this.draw();
-            }
-        }
-
-        function init() {
-            particlesArray = [];
-            let numberOfParticles = (canvas.height * canvas.width) / 9000;
-            for (let i = 0; i < numberOfParticles; i++) {
-                let size = (Math.random() * 2) + 1;
-                let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-                let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-                let directionX = (Math.random() * .4) - .2;
-                let directionY = (Math.random() * .4) - .2;
-                particlesArray.push(new Particle(x, y, directionX, directionY, size));
-            }
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, innerWidth, innerHeight);
-            for (let i = 0; i < particlesArray.length; i++) { particlesArray[i].update(); }
-        }
-
-        init();
-        animate();
-        
-        window.addEventListener('resize', () => {
-            canvas.width = innerWidth;
-            canvas.height = innerHeight;
-            init();
-        });
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>
