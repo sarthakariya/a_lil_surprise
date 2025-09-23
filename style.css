@@ -5,23 +5,28 @@
 body {
     margin: 0;
     padding: 0;
-    background: #0f0c29;
-    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
     height: 100vh;
     font-family: 'Quicksand', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    color: #4b3832;
+    background-color: #f7f3e9;
 }
 
-#particle-canvas {
+.background {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" fill="%23f7f3e9" /><line x1="0" y1="50" x2="100%" y2="50" stroke="%23e6e1d6" stroke-width="2" /></svg>'),
+                      url('https://www.transparenttextures.com/patterns/notebook.png');
+    background-size: 100% 50px, auto;
+    background-repeat: repeat-y, repeat;
+    opacity: 0.8;
 }
 
 .container, main.letter-container {
@@ -45,9 +50,9 @@ body {
     position: relative;
     width: 300px;
     height: 200px;
-    background: linear-gradient(145deg, #4d468d, #3b356d);
+    background: #d6b8a1;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transform-style: preserve-3d;
     transition: transform 1.5s 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -64,7 +69,7 @@ body {
     left: 0;
     width: 100%;
     height: 50%;
-    background: linear-gradient(165deg, #6059a9, #4d468d);
+    background: #c2a18b;
     border-radius: 10px 10px 0 0;
     transform-origin: top;
     transition: transform 1.5s 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
@@ -75,21 +80,22 @@ body {
     transform: rotateX(180deg);
 }
 
-/* Letter inside */
+/* Letter inside (small and ready to animate) */
 .letter {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0);
+    transform: translate(-50%, -50%) scale(1);
     width: 90%;
     height: 90%;
-    background: #d6b8a1;
+    background: #f7f3e9;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    transition: transform 2.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 5;
+    opacity: 0;
 }
 
 /* Animated Heart Seal */
@@ -123,21 +129,13 @@ body {
     max-width: 90%;
     width: 600px;
     padding: 40px 50px;
-    background: rgba(255, 255, 255, 0.1);
+    background: #f7f3e9;
     border-radius: 25px;
     box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    color: white;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+    color: #4b3832;
     text-align: left;
-    opacity: 0;
-    transform: translateY(20px);
-    animation: letter-entry 1s forwards 0.5s;
-}
-
-@keyframes letter-entry {
-    to { opacity: 1; transform: translateY(0); }
+    opacity: 0; /* Initially hidden, will be animated by GSAP */
 }
 
 .letter-content-wrapper {
@@ -150,39 +148,44 @@ body {
     white-space: pre-wrap;
     overflow: hidden;
     width: 0;
-    border-right: 2px solid #fff;
+    opacity: 0;
+    border-right: 2px solid #4b3832;
     padding-right: 2px;
 }
 
 .letter-container h1 {
     font-family: 'Dancing Script', cursive;
-    color: #ffaddd;
-    font-size: 2.5rem;
+    color: #8c5e3d;
+    font-size: 2.3rem; /* Adjusted for smaller screens */
     text-align: center;
-    text-shadow: 0 0 5px #ffaddd;
+    text-shadow: 0 0 5px #ffedd0;
 }
 
 .letter-container p {
-    font-size: 1rem;
+    font-size: 0.9rem; /* Adjusted for smaller screens */
     line-height: 1.8;
     text-shadow: 0 0 1px rgba(0,0,0,0.1);
 }
 
 .signature {
-    font-size: 2rem;
+    font-size: 1.8rem; /* Adjusted for smaller screens */
     font-family: 'Dancing Script', cursive;
-    color: #ffaddd;
+    color: #8c5e3d;
     text-align: right;
     margin-top: 40px;
-    text-shadow: 0 0 5px #ffaddd;
+    text-shadow: 0 0 5px #ffedd0;
 }
 
 /* --- Phone Optimization --- */
 @media (max-width: 600px) {
     .envelope { width: 280px; height: 180px; }
     .heart-seal { font-size: 4rem; }
-    .letter-container { width: auto; margin: 20px; padding: 25px; }
-    .letter-container h1 { font-size: 2rem; }
-    .letter-container p { font-size: 0.9rem; }
-    .signature { font-size: 1.8rem; }
+    .letter-container {
+        width: auto;
+        margin: 20px;
+        padding: 25px;
+    }
+    .letter-container h1 { font-size: 1.8rem; }
+    .letter-container p { font-size: 0.8rem; }
+    .signature { font-size: 1.6rem; }
 }
