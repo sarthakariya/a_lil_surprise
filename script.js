@@ -1,55 +1,61 @@
 // --- Envelope & Letter Animation ---
 if (document.querySelector('.envelope-wrapper')) {
-    const envelopeWrapper = document.querySelector('.envelope-wrapper');
-    const heartSeal = document.querySelector('.heart-seal');
+    const envelopeWrapper = document.querySelector('.envelope-wrapper');
+    const heartSeal = document.querySelector('.heart-seal');
+    const letter = document.querySelector('.letter');
 
-    heartSeal.addEventListener('click', () => {
-        // Step 1: Open the envelope flap
-        envelopeWrapper.classList.add('open');
-        
-        // Wait for the animation to complete, then redirect
-        setTimeout(() => {
-            window.location.href = 'letter.html';
-        }, 3000); // Wait for the envelope and flap animations
-    });
+    heartSeal.addEventListener('click', () => {
+        // Step 1: Open the envelope flap
+        envelopeWrapper.classList.add('open');
+        
+        // Step 2: Animate the letter's entrance
+        setTimeout(() => {
+            letter.style.opacity = 1;
+            letter.style.transform = 'translate(-50%, -50%) scale(1)';
+        }, 1500); // Wait for the envelope flap animation to start
+        
+        // Step 3: Wait for the letter animation to complete, then redirect
+        setTimeout(() => {
+            window.location.href = 'letter.html';
+        }, 3000); // Total animation time
+    });
 }
 
 // --- Typing Animation for Letter.html ---
 document.addEventListener('DOMContentLoaded', () => {
-    if (document.body.classList.contains('letter-page')) {
-        const elements = document.querySelectorAll('.typing-animation');
+    if (document.body.classList.contains('letter-page')) {
+        const elements = document.querySelectorAll('.typing-animation');
 
-        const typewriter = (element, text, speed) => {
-            return new Promise(resolve => {
-                let i = 0;
-                element.textContent = ''; // Clear existing text
-                element.style.opacity = 1; // Make element visible
+        const typewriter = (element, text, speed) => {
+            return new Promise(resolve => {
+                let i = 0;
+                element.textContent = ''; // Clear existing text
+                element.style.opacity = 1; // Make element visible
 
-                const interval = setInterval(() => {
-                    if (i < text.length) {
-                        element.textContent += text.charAt(i);
-                        i++;
-                    } else {
-                        clearInterval(interval);
-                        element.style.borderRight = 'none';
-                        resolve();
-                    }
-                }, speed);
-            });
-        };
+                const interval = setInterval(() => {
+                    if (i < text.length) {
+                        element.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(interval);
+                        element.style.borderRight = 'none';
+                        resolve();
+                    }
+                }, speed);
+            });
+        };
 
-        const startTyping = async () => {
-            const typingSpeed = 50; // Milliseconds per character
-            for (const el of elements) {
-                const text = el.getAttribute('data-text');
-                await typewriter(el, text, typingSpeed);
-                await new Promise(resolve => setTimeout(resolve, 500)); // Pause between lines
-            }
-        };
+        const startTyping = async () => {
+            const typingSpeed = 50;
+            for (const el of elements) {
+                const text = el.getAttribute('data-text');
+                await typewriter(el, text, typingSpeed);
+                await new Promise(resolve => setTimeout(resolve, 500));
+            }
+        };
 
-        // Start the typing animation after a brief delay
-        setTimeout(() => {
-            startTyping();
-        }, 1000);
-    }
+        setTimeout(() => {
+            startTyping();
+        }, 1000);
+    }
 });
