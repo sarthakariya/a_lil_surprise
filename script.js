@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const typewriter = (element, text, speed) => {
             return new Promise(resolve => {
                 let i = 0;
-                element.innerHTML = '<span></span>'; // Create a span for the text
+                element.innerHTML = '<span></span>';
                 const textSpan = element.querySelector('span');
                 
                 const interval = setInterval(() => {
