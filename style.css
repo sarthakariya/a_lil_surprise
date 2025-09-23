@@ -78,8 +78,7 @@ body {
     border-radius: 10px 10px 0 0;
     transform-origin: top;
     transition: transform 1.5s 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    transform: rotateX(0deg);
-    z-index: 10;
+    transform: rotateX(180deg);
 }
 .envelope-wrapper.open .envelope::after {
     transform: rotateX(180deg);
@@ -161,8 +160,6 @@ body {
     padding-right: 2px;
     white-space: pre-wrap;
     min-height: 1.2em;
-    width: 0; /* Key CSS for typing animation */
-    overflow: hidden; /* Key CSS for typing animation */
 }
 
 /* --- Phone Optimization --- */
