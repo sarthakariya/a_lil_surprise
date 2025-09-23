@@ -1,113 +1,180 @@
-// --- UNIQUE PARTICLE BACKGROUND ANIMATION ---
-const canvas = document.getElementById('particle-canvas');
-const ctx = canvas.getContext('2d');
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600&display=swap');
 
-let particlesArray;
-
-// Particle class
-class Particle {
-    constructor(x, y, directionX, directionY, size, color) {
-        this.x = x;
-        this.y = y;
-        this.directionX = directionX;
-        this.directionY = directionY;
-        this.size = size;
-        this.color = color;
-    }
-    draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2, false);
-        ctx.fillStyle = 'rgba(255, 105, 180, 0.5)';
-        ctx.fill();
-    }
-    update() {
-        if (this.x > canvas.width || this.x < 0) {
-            this.directionX = -this.directionX;
-        }
-        if (this.y > canvas.height || this.y < 0) {
-            this.directionY = -this.directionY;
-        }
-        this.x += this.directionX;
-        this.y += this.directionY;
-        this.draw();
-    }
+/* --- Global Styles & Background --- */
+body {
+    margin: 0;
+    padding: 0;
+    background: #0f0c29;
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    height: 100vh;
+    font-family: 'Quicksand', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
 }
 
-// Create particle array
-function init() {
-    particlesArray = [];
-    let numberOfParticles = (canvas.height * canvas.width) / 9000;
-    for (let i = 0; i < numberOfParticles; i++) {
-        let size = (Math.random() * 2) + 1;
-        let x = (Math.random() * ((innerWidth - size * 2) - (size * 2)) + size * 2);
-        let y = (Math.random() * ((innerHeight - size * 2) - (size * 2)) + size * 2);
-        let directionX = (Math.random() * .4) - .2;
-        let directionY = (Math.random() * .4) - .2;
-        let color = '#ff69b4';
-        particlesArray.push(new Particle(x, y, directionX, directionY, size, color));
-    }
+#particle-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
-// Animation loop
-function animate() {
-    requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
-
-    for (let i = 0; i < particlesArray.length; i++) {
-        particlesArray[i].update();
-    }
+.container, main.letter-container {
+    position: relative;
+    z-index: 1;
 }
 
-init();
-animate();
+/* --- Page 1: Envelope & Heart --- */
+.envelope-wrapper {
+    position: relative;
+    perspective: 1000px;
+    animation: float 5s ease-in-out infinite alternate;
+}
 
-window.addEventListener('resize', () => {
-    canvas.width = innerWidth;
-    canvas.height = innerHeight;
-    init();
-});
+@keyframes float {
+    from { transform: translateY(0px) rotate(0deg); }
+    to { transform: translateY(-10px) rotate(1deg); }
+}
 
+.envelope {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background: linear-gradient(145deg, #4d468d, #3b356d);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    transform-style: preserve-3d;
+    transition: transform 2.5s 2s cubic-bezier(0.16, 1, 0.3, 1);
+}
 
-// --- ENVELOPE & HEART SHATTER ANIMATION ---
-// This code only runs on the first page (index.html)
-if (document.querySelector('.envelope-wrapper')) {
-    const envelope = document.querySelector('.envelope-wrapper');
-    const heartSeal = document.querySelector('.heart-seal');
+.envelope-wrapper.open .envelope {
+    transform: translateY(100px) rotateX(-15deg);
+}
 
-    // Function to shatter the heart
-    function shatterHeart() {
-        heartSeal.style.transition = 'none'; // Remove transition for instant disappearance
-        heartSeal.style.opacity = 0;
-        
-        const fragmentsContainer = document.createElement('div');
-        fragmentsContainer.className = 'heart-fragments';
-        envelope.appendChild(fragmentsContainer);
+/* Envelope Flap */
+.envelope::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(165deg, #6059a9, #4d468d);
+    border-radius: 10px 10px 0 0;
+    transform-origin: top;
+    transition: transform 1.5s 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transform: rotateX(0deg);
+    z-index: 10;
+}
+.envelope-wrapper.open .envelope::after {
+    transform: rotateX(180deg);
+}
 
-        for (let i = 0; i < 30; i++) {
-            const fragment = document.createElement('div');
-            fragment.className = 'fragment';
-            const randomX = (Math.random() - 0.5) * 400;
-            const randomY = (Math.random() - 0.5) * 400;
-            const randomRot = Math.random() * 360;
+/* Letter inside */
+.letter {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 90%;
+    height: 90%;
+    background: #d6b8a1; /* Light brownish tint */
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    transition: transform 2s 2.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.envelope-wrapper.open .letter {
+    transform: translate(-50%, -50%) scale(1);
+    transform: translate(-50%, -10px) scale(1); /* New final position for the letter */
+}
 
-            fragment.style.setProperty('--x', `${randomX}px`);
-            fragment.style.setProperty('--y', `${randomY}px`);
-            fragment.style.setProperty('--rot', `${randomRot}deg`);
-            
-            fragmentsContainer.appendChild(fragment);
-        }
+/* Heart Seal is now an emoji */
+.heart-seal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 11;
+    font-size: 5rem;
+    cursor: pointer;
+    text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff69b4;
+    transition: transform 0.3s ease-in-out;
+}
+
+.heart-seal:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* --- Page 2: Letter Page --- */
+.letter-page {
+    overflow-y: auto;
+}
+.letter-container {
+    max-width: 90%;
+    width: 600px;
+    padding: 40px 50px;
+    background: #d6b8a1; /* Brownish tint */
+    border-radius: 25px; /* More rounded */
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #4b3832; /* Dark brown text for contrast */
+    text-align: left;
+    transition: transform 1s ease-in-out;
+}
+.letter-container:hover {
+    transform: translateY(-5px) scale(1.01);
+}
+
+.letter-container h1 {
+    font-family: 'Dancing Script', cursive;
+    color: #8c5e3d;
+    font-size: 3.5rem;
+    text-align: center;
+    margin-bottom: 25px;
+    text-shadow: 0 0 5px #ffedd0;
+}
+
+.letter-container p {
+    font-size: 1.2rem;
+    line-height: 1.8;
+    text-shadow: 0 0 1px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+}
+
+.signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2.5rem;
+    color: #8c5e3d;
+    text-align: right;
+    margin-top: 40px;
+    text-shadow: 0 0 5px #ffedd0;
+}
+
+/* --- Phone Optimization --- */
+@media (max-width: 600px) {
+    .envelope {
+        width: 280px;
+        height: 180px;
     }
-
-    // Trigger animations after a short delay
-    setTimeout(() => {
-        shatterHeart();
-        envelope.classList.add('open');
-    }, 1500); // 1.5 second delay after page load
-
-    // Redirect after animation is complete
-    setTimeout(() => {
-        window.location.href = 'letter.html';
-    }, 6000); // 6 seconds total
+    .heart-seal {
+        font-size: 4rem;
+    }
+    .letter-container {
+        width: auto;
+        margin: 20px;
+        padding: 25px;
+    }
+    .letter-container h1 { font-size: 2.8rem; }
+    .letter-container p { font-size: 1.1rem; }
+    .signature { font-size: 2.2rem; }
 }
