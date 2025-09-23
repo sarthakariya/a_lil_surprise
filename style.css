@@ -5,51 +5,29 @@
 body {
     margin: 0;
     padding: 0;
-    background-color: #0d041a;
     height: 100vh;
     font-family: 'Quicksand', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    color: #fff;
+    color: #4b3832;
+    background-color: #f7f3e9;
 }
 
-.background-animation, .stars, .nebula-bg {
+.background {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: 0;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" fill="%23f7f3e9" /><line x1="0" y1="50" x2="100%" y2="50" stroke="%23e6e1d6" stroke-width="2" /></svg>'),
+                      url('https://www.transparenttextures.com/patterns/notebook.png');
+    background-size: 100% 50px, auto;
+    background-repeat: repeat-y, repeat;
+    opacity: 0.8;
 }
-
-/* Futuristic Nebula Background */
-.nebula-bg {
-    background: radial-gradient(circle at 15% 50%, rgba(138, 43, 226, 0.4), transparent 50%),
-                radial-gradient(circle at 85% 60%, rgba(255, 20, 147, 0.4), transparent 50%),
-                radial-gradient(circle at 50% 20%, rgba(0, 255, 255, 0.2), transparent 50%),
-                radial-gradient(circle at 30% 80%, rgba(255, 165, 0, 0.3), transparent 50%);
-    animation: nebula-flow 25s ease-in-out infinite alternate;
-}
-
-@keyframes nebula-flow {
-    0% { transform: scale(1.1) rotate(0deg); opacity: 1; }
-    50% { transform: scale(1.2) rotate(3deg); opacity: 0.9; }
-    100% { transform: scale(1.1) rotate(0deg); opacity: 1; }
-}
-
-/* Star Field */
-.stars {
-    background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" fill="none" /></svg>');
-    animation: star-move 300s linear infinite;
-}
-
-@keyframes star-move {
-    from { background-position: 0 0; }
-    to { background-position: -10000px -5000px; }
-}
-
 
 .container, main.letter-container {
     position: relative;
@@ -72,11 +50,11 @@ body {
     position: relative;
     width: 300px;
     height: 200px;
-    background: linear-gradient(145deg, #4d468d, #3b356d);
+    background: #d6b8a1;
     border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     transform-style: preserve-3d;
-    transition: transform 3s 2s cubic-bezier(0.4, 0, 0.2, 1); /* Slower, smoother animation */
+    transition: transform 1.5s 1.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .envelope-wrapper.open .envelope {
@@ -91,10 +69,10 @@ body {
     left: 0;
     width: 100%;
     height: 50%;
-    background: linear-gradient(165deg, #6059a9, #4d468d);
+    background: #c2a18b;
     border-radius: 10px 10px 0 0;
     transform-origin: top;
-    transition: transform 2s 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: transform 1.5s 1.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     transform: rotateX(0deg);
     z-index: 10;
 }
@@ -102,27 +80,35 @@ body {
     transform: rotateX(180deg);
 }
 
-/* Letter inside */
+/* Letter inside (small and ready to animate) */
 .letter {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%) scale(0);
+    transform: translate(-50%, -50%) scale(0.1); /* Start small */
     width: 90%;
     height: 90%;
-    background: #d6b8a1;
+    background: #f7f3e9;
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0,0,0,0.3);
-    transition: transform 2.5s 2.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+    transition: transform 2.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.envelope-wrapper.open .letter {
-    transform: translate(-50%, -10px) scale(1);
+
+/* New animation to transition letter to next page */
+.letter-move-to-page-2 {
+    animation: letter-move-to-page-2 3s forwards;
 }
 
-/* Animated Heart Seal with Music Icon */
+@keyframes letter-move-to-page-2 {
+    0% { transform: translate(-50%, -50%) scale(0.1); opacity: 1; }
+    50% { transform: translate(-50%, -50%) scale(1.5); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+/* Animated Heart Seal */
 .heart-seal {
     position: absolute;
     top: 50%;
@@ -133,8 +119,6 @@ body {
     font-size: 5rem;
     text-shadow: 0 0 20px #ff69b4, 0 0 40px #ff69b4;
     transition: transform 0.3s ease-in-out;
-    display: flex;
-    align-items: center;
 }
 
 .heart-emoji {
@@ -147,21 +131,6 @@ body {
     100% { transform: scale(1); }
 }
 
-.music-icon {
-    font-size: 0.8em;
-    position: absolute;
-    bottom: 10%;
-    right: 5%;
-    color: #fff;
-    opacity: 0.7;
-    animation: music-glow 1.5s ease-in-out infinite alternate;
-}
-
-@keyframes music-glow {
-    from { text-shadow: 0 0 5px #ffaddd; }
-    to { text-shadow: 0 0 10px #ffaddd, 0 0 15px #ffaddd; }
-}
-
 /* --- Page 2: Letter Page --- */
 .letter-page {
     overflow-y: auto;
@@ -170,75 +139,74 @@ body {
     max-width: 90%;
     width: 600px;
     padding: 40px 50px;
-    background: #d6b8a1;
+    background: #f7f3e9;
     border-radius: 25px;
-    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+    border: 2px solid rgba(0, 0, 0, 0.1);
     color: #4b3832;
     text-align: left;
-    animation: letter-entrance 2s forwards;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: letter-entry 1s forwards 2s;
 }
 
-@keyframes letter-entrance {
-    from { opacity: 0; transform: translateY(50px) scale(0.95); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+@keyframes letter-entry {
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.letter-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .letter-container h1 {
     font-family: 'Dancing Script', cursive;
     color: #8c5e3d;
-    font-size: 2.5rem; /* Smaller font size */
+    font-size: 2.5rem;
     text-align: center;
-    margin-bottom: 25px;
     text-shadow: 0 0 5px #ffedd0;
-    animation: text-glow 3s infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 0;
+    border-right: 2px solid #8c5e3d;
+    animation: typing 1.5s steps(20, end) forwards;
 }
 
-@keyframes text-glow {
-    from { text-shadow: 0 0 5px #ffedd0; }
-    to { text-shadow: 0 0 10px #ffedd0, 0 0 15px #ffedd0; }
-}
-
-.letter-container p {
-    font-size: 1rem; /* Smaller font size */
+.letter-container p, .signature {
+    font-size: 1rem;
     line-height: 1.8;
     text-shadow: 0 0 1px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
-    animation: fade-in 2s forwards;
+    white-space: pre-wrap;
+    overflow: hidden;
     opacity: 0;
+    border-right: 2px solid #4b3832;
 }
 
-.letter-container p:nth-child(2) { animation-delay: 0.5s; }
-.letter-container p:nth-child(3) { animation-delay: 1s; }
-
-.signature {
-    font-family: 'Dancing Script', cursive;
-    font-size: 2rem; /* Smaller font size */
-    color: #8c5e3d;
-    text-align: right;
-    margin-top: 40px;
-    text-shadow: 0 0 5px #ffedd0;
-    animation: signature-fade 2s forwards 1.5s;
-    opacity: 0;
+.typing-animation {
+    animation: typing 2s steps(40, end) forwards;
 }
-@keyframes signature-fade { from { opacity: 0; } to { opacity: 1; } }
+
+.letter-container h1 { animation-delay: 2s; }
+.letter-container p:nth-of-type(1) { animation-delay: 3.5s; }
+.letter-container p:nth-of-type(2) { animation-delay: 6s; }
+.signature { animation-delay: 8.5s; }
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+}
+
+@keyframes cursor-blink {
+    from, to { border-color: transparent; }
+    50% { border-color: #4b3832; }
+}
 
 /* --- Phone Optimization --- */
 @media (max-width: 600px) {
-    .envelope {
-        width: 280px;
-        height: 180px;
-    }
-    .heart-seal {
-        font-size: 4rem;
-    }
-    .letter-container {
-        width: auto;
-        margin: 20px;
-        padding: 25px;
-    }
+    .envelope { width: 280px; height: 180px; }
+    .heart-seal { font-size: 4rem; }
+    .letter-container { width: auto; margin: 20px; padding: 25px; }
     .letter-container h1 { font-size: 2rem; }
     .letter-container p { font-size: 0.9rem; }
     .signature { font-size: 1.8rem; }
