@@ -1,0 +1,183 @@
+/* General Body Styling */
+body {
+    background: #f2e3e3; /* A soft, romantic pink background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    font-family: 'Quicksand', sans-serif;
+    overflow: hidden; /* Hide scrollbars on the animation page */
+}
+
+/* Page 1: Envelope Animation */
+.container {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.envelope-wrapper {
+    position: relative;
+    background: #f9d8d8;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.envelope {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    background-color: #f08080; /* Light Coral color */
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.envelope:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 100px solid transparent;
+    border-right: 150px solid #e86a6a;
+    border-bottom: 100px solid #e86a6a;
+    border-left: 150px solid transparent;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+.envelope:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 100px;
+    background-color: #f08080;
+    border-radius: 10px 10px 0 0;
+    transform-origin: top;
+    transition: transform 1s 1s ease-in-out;
+    animation: open-flap 2s 1s forwards;
+    z-index: 3;
+}
+
+.letter {
+    position: absolute;
+    width: 90%;
+    height: 90%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    z-index: 1;
+    transition: transform 2s 2.5s ease-in-out;
+    animation: slide-out 4s 3s forwards;
+}
+
+.letter .text {
+    padding: 20px;
+    color: #333;
+    text-align: center;
+}
+
+.letter .text strong {
+    font-size: 1.2rem;
+}
+
+.heart {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    background-color: #ff4757;
+    z-index: 4;
+    border-radius: 50px 50px 0 0;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    animation: pulse 1s infinite;
+}
+
+.heart:before, .heart:after {
+    content: '';
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #ff4757;
+    border-radius: 50%;
+}
+
+.heart:before {
+    top: -25px;
+    left: 0;
+}
+
+.heart:after {
+    left: 25px;
+    top: 0;
+}
+
+/* Animations */
+@keyframes open-flap {
+    0% { transform: rotateX(0deg); }
+    100% { transform: rotateX(180deg); z-index: 0; }
+}
+
+@keyframes slide-out {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-150px); z-index: 5; }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) rotate(-45deg) scale(1); }
+    50% { transform: translate(-50%, -50%) rotate(-45deg) scale(1.1); }
+}
+
+/* Page 2: Letter Styling */
+.letter-page {
+    background: #fffaf0; /* Floral white background for the letter */
+    overflow: auto; /* Allow scrolling for long messages */
+    height: auto;
+    min-height: 100vh;
+}
+
+.letter-container {
+    background: white;
+    padding: 40px 60px;
+    max-width: 800px;
+    margin: 50px auto;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    border-radius: 10px;
+    border-left: 5px solid #f08080;
+}
+
+.letter-container h1 {
+    font-family: 'Dancing Script', cursive;
+    color: #d16060;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.letter-container p {
+    font-family: 'Quicksand', sans-serif;
+    color: #555;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: justify;
+}
+
+.signature {
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    color: #d16060;
+    text-align: right;
+    margin-top: 40px;
+}
