@@ -22,16 +22,21 @@ body {
     width: 100%;
     height: 100%;
     z-index: 0;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" fill="%23f7f3e9" /><line x1="0" y1="50" x2="100%" y2="50" stroke="%23e6e1d6" stroke-width="2" /></svg>'),
-                      url('https://www.transparenttextures.com/patterns/notebook.png');
-    background-size: 100% 50px, auto;
-    background-repeat: repeat-y, repeat;
+    /* Enhanced Background: Natural, old-looking feature with sepia tone and subtle texture */
+    background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%"><rect width="100%" height="100%" fill="%23f7f3e9" /><line x1="0" y1="50" x2="100%" y2="50" stroke="%23e6e1d6" stroke-width="2" /></svg>'),
+        url('https://www.transparenttextures.com/patterns/notebook.png'),
+        url('https://www.transparenttextures.com/patterns/cream-paper.png'); /* Added a subtle cream paper texture */
+    background-size: 100% 50px, auto, auto;
+    background-repeat: repeat-y, repeat, repeat;
+    background-blend-mode: multiply; /* Blends background images for a more natural look */
+    filter: sepia(0.1) brightness(1.05); /* Subtle sepia tone for old-looking effect */
     animation: background-move 60s linear infinite;
 }
 
 @keyframes background-move {
-    from { background-position: 0 0, 0 0; }
-    to { background-position: 0 1000px, 1000px 1000px; }
+    from { background-position: 0 0, 0 0, 0 0; }
+    to { background-position: 0 1000px, 1000px 1000px, 1000px 1000px; }
 }
 
 .container, main.letter-container {
@@ -60,7 +65,7 @@ body {
     width: 300px;
     height: 200px;
     background-color: #f08080;
-    border-radius: 20px;
+    border-radius: 20px; /* Fully rounded corners */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,7 +83,7 @@ body {
     border-right: 150px solid #e86a6a;
     border-bottom: 100px solid #e86a6a;
     border-left: 150px solid transparent;
-    border-radius: 20px;
+    border-radius: 20px; /* Fully rounded corners */
     z-index: 2;
 }
 
@@ -90,7 +95,7 @@ body {
     width: 300px;
     height: 100px;
     background-color: #f08080;
-    border-radius: 20px 20px 0 0;
+    border-radius: 20px 20px 0 0; /* Fully rounded corners */
     transform-origin: top;
     transition: transform 1s 1s ease-in-out;
     z-index: 3;
@@ -105,7 +110,7 @@ body {
     width: 90%;
     height: 90%;
     background-color: #f5f5dc;
-    border-radius: 20px;
+    border-radius: 20px; /* Fully rounded corners */
     box-shadow: 0 0 10px rgba(0,0,0,0.1);
     z-index: 1;
     transition: transform 2s 2.5s ease-in-out;
@@ -192,8 +197,38 @@ body {
     margin: 50px auto;
     box-shadow: 0 5px 25px rgba(0,0,0,0.1);
     border-radius: 20px;
-    border-left: 5px solid #f08080;
+    border: 3px double #a88d77; /* A subtle, double border for a carved look */
+    position: relative; /* Needed for pseudo-elements */
+    overflow: hidden; /* Ensures pseudo-elements don't bleed out */
 }
+
+/* "Carvings" - Subtle decorative borders/elements */
+.letter-container::before,
+.letter-container::after {
+    content: '';
+    position: absolute;
+    border: 1px solid rgba(168, 141, 119, 0.5); /* Lighter shade of the border color */
+    border-radius: 20px;
+    pointer-events: none; /* Allows clicks to pass through */
+}
+
+.letter-container::before {
+    top: 10px;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    border-style: dashed; /* A dashed inner border for a delicate carving */
+}
+
+.letter-container::after {
+    top: 5px;
+    left: 5px;
+    right: 5px;
+    bottom: 5px;
+    border-style: dotted; /* A dotted inner border */
+    opacity: 0.7;
+}
+
 
 .letter-container h1 {
     font-family: 'Dancing Script', cursive;
