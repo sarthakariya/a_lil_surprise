@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         const startTyping = async () => {
-            const typingSpeed = 30;
+            const typingSpeed = 27;
             for (const el of elements) {
                 const text = el.getAttribute('data-text');
                 await typewriter(el, text, typingSpeed);
